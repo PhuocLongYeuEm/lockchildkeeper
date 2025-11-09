@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game An Toàn Cho Trẻ Em 🛡️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="Friendly_robot_safety_mascot_d707b14b.png" alt="Robot An Toàn" class="robot-header">
+                <div class="header-text">
+                    <h1>🛡️ Game An Toàn Cho Trẻ Em</h1>
+                    <p class="subtitle">Cùng Robot An Toàn học cách bảo vệ bản thân!</p>
+                </div>
+            </div>
+            <div class="score-board" aria-live="polite" aria-atomic="true">
+                <span>Câu hỏi: <span id="current-question">1</span>/<span id="total-questions">40</span></span>
+                <span>⭐ Điểm: <span id="score">0</span></span>
+            </div>
+        </header>
+
+        <div id="game-container">
+            <div id="question-card">
+                <div class="character-scene">
+                    <img src="Happy_Vietnamese_child_character_adff8138.png" alt="Em" class="character child-character">
+                    <img src="Stranger_danger_warning_icon_757f9ee4.png" alt="Tình huống" class="character stranger-character hidden" id="stranger-icon">
+                </div>
+                
+                <div class="question-text" id="question-text" role="status" aria-live="polite"></div>
+                <div class="answers" id="answers-container"></div>
+                
+                <div class="robot-feedback hidden" id="robot-feedback" role="alert" aria-live="assertive">
+                    <img src="Friendly_robot_safety_mascot_d707b14b.png" alt="Robot" class="robot-avatar">
+                    <div class="feedback-bubble" id="feedback"></div>
+                </div>
+                
+                <button id="next-btn" class="next-btn hidden">Tiếp theo ➡️</button>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="hidden">
+            <div class="game-over-card">
+                <img src="Success_celebration_trophy_d6c7de55.png" alt="Trophy" class="trophy-img" id="trophy-img">
+                <img src="Friendly_robot_safety_mascot_d707b14b.png" alt="Robot" class="robot-final">
+                <h2 id="game-over-title"></h2>
+                <div class="final-score">
+                    <p>Điểm của bạn:</p>
+                    <h3 id="final-score">0/40</h3>
+                </div>
+                <p id="final-message" class="final-message"></p>
+                <button id="replay-btn" class="next-btn">Chơi lại 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

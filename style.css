@@ -1,0 +1,364 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent),
+        radial-gradient(1px 1px at 33% 80%, white, transparent);
+    background-size: 200px 200px;
+    opacity: 0.5;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 800px;
+    padding: 30px;
+    z-index: 10;
+}
+
+header {
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.robot-header {
+    width: 70px;
+    height: 70px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: #4b5563;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #9ca3af;
+}
+
+.score-board {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.score-board span {
+    margin-bottom: 5px;
+}
+
+#question-card {
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.character-scene {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    min-height: 100px;
+    margin-bottom: 10px;
+}
+
+.character {
+    width: 80px;
+    height: 80px;
+    transition: all 0.5s ease-in-out;
+}
+
+.stranger-character {
+    width: 60px;
+    height: 60px;
+    transition: all 0.5s ease-in-out;
+}
+
+.question-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    text-align: center;
+    padding: 10px 0;
+    min-height: 80px;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.answer-btn {
+    padding: 15px 20px;
+    background-color: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.answer-btn:hover:not(:disabled) {
+    background-color: #e5e7eb;
+    border-color: #d1d5db;
+}
+
+.answer-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* HIỆU ỨNG PHẢN HỒI */
+
+/* Đúng */
+.answer-btn.correct, 
+.answer-btn.correct-highlight { /* Thêm highlight cho đáp án đúng khi chọn sai */
+    background-color: #4ade80 !important;
+    border-color: #10b981 !important;
+    color: white !important;
+    transform: scale(1.03);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+}
+
+/* Cảnh báo (Warn) - Sẽ giữ lại để người dùng xem feedback trước khi đi tiếp */
+.answer-btn.warn {
+    background-color: #fbbf24 !important;
+    border-color: #f59e0b !important;
+    color: #374151 !important;
+    animation: pulse-subtle 0.5s 1; /* Hiệu ứng nhẹ hơn */
+}
+
+/* Nguy hiểm (Gameover) */
+.answer-btn.gameover {
+    background-color: #f87171 !important;
+    border-color: #ef4444 !important;
+    color: white !important;
+    animation: shake 0.5s 1; /* Giữ lại hiệu ứng mạnh cho Game Over */
+}
+
+/* ROBOT FEEDBACK AREA */
+.robot-feedback {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s;
+}
+
+.robot-avatar {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.feedback-bubble {
+    font-size: 1.1rem;
+    font-style: italic;
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.4;
+    padding: 5px 0;
+}
+
+.feedback-bubble.correct {
+    color: #10b981;
+}
+.feedback-bubble.warn {
+    color: #f59e0b;
+}
+.feedback-bubble.gameover {
+    color: #ef4444;
+}
+
+.next-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.next-btn:hover {
+    background-color: #5563c1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* GAME OVER SCREEN */
+#game-over-screen {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+}
+
+.trophy-img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.robot-final {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+#game-over-title {
+    font-size: 2.5rem;
+    color: #ef4444; /* Mặc định là Game Over */
+    margin-bottom: 20px;
+}
+
+#game-over-screen h2:last-of-type {
+    color: #10b981; /* Chúc mừng */
+}
+
+.final-score p {
+    font-size: 1.3rem;
+    color: #92400e;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.final-score h3 {
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+}
+
+.final-message {
+    font-size: 1.25rem;
+    color: #374151;
+    line-height: 1.7;
+    margin: 25px 0 30px 0;
+    font-weight: 500;
+}
+
+/* ANIMATIONS */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+@keyframes pulse-subtle {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .robot-header {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .header-content {
+        gap: 12px;
+    }
+
+    .score-board {
+        font-size: 0.9rem;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+    }
+
+    .answer-btn {
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+    
+    .feedback-bubble {
+        font-size: 1rem;
+    }
+
+    .trophy-img {
+        width: 90px;
+        height: 90px;
+    }
+    
+    #game-over-title {
+        font-size: 2rem;
+    }
+    
+    .final-score h3 {
+        font-size: 3rem;
+    }
+    
+    .final-message {
+        font-size: 1.1rem;
+    }
+}
