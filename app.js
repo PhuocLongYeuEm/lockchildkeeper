@@ -1,17 +1,16 @@
-// ✅ SERVER ỔN ĐỊNH CHO LOCALHOST & REPLIT
+// ✅ SERVER ỔN ĐỊNH CHO LOCALHOST, VERCEL & DOMAIN RIÊNG
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const path = require("path");
 const dotenvResult = require("dotenv").config({ quiet: true });
 
 // ✅ Đảm bảo fetch hoạt động trên mọi Node version
 let fetchFn;
 try {
-  // Node 18+ có sẵn fetch
-  fetchFn = fetch;
+  fetchFn = fetch; // Node 18+ có sẵn fetch
 } catch {
-  // Node 16 trở xuống — dùng dynamic import
   fetchFn = (...args) => import("node-fetch").then(({ default: f }) => f(...args));
 }
 const fetch = fetchFn;
@@ -21,10 +20,10 @@ const app = express();
 // 🛡️ Cấu hình bảo mật
 app.use(helmet());
 
-// 🌐 Cho phép tất cả nguồn truy cập (Replit / Localhost / Online)
+// 🌐 Cấu hình CORS: chỉ cho phép domain hợp lệ (ALLOWED_ORIGIN)
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.ALLOWED_ORIGIN || "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -32,7 +31,7 @@ app.use(
 
 // ⚙️ Cho phép đọc JSON và truy cập file tĩnh (HTML, JS, CSS)
 app.use(express.json());
-app.use(express.static("."));
+app.use(express.static(__dirname));
 
 // 🚫 Giới hạn request để tránh spam
 app.use(
@@ -42,13 +41,13 @@ app.use(
   })
 );
 
-// 🔑 Lấy API key từ .env
+// 🔑 Lấy API key từ biến môi trường
 const API_KEY = process.env.API_KEY;
 if (!API_KEY) {
-  console.error("❌ Thiếu API_KEY trong file .env — Gemini AI sẽ không hoạt động.");
+  console.error("❌ Thiếu API_KEY trong file .env hoặc Environment Variables của Vercel.");
 }
 
-// 🌍 URL của Gemini API (bạn có thể thay model khác nếu cần)
+// 🌍 URL của Gemini API
 const MODEL_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
   API_KEY;
@@ -58,7 +57,6 @@ app.post("/analyze", async (req, res) => {
   try {
     console.log("📩 Nhận request từ client:", req.body);
 
-    // Gửi đến Gemini API
     const response = await fetch(MODEL_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -83,13 +81,24 @@ app.post("/analyze", async (req, res) => {
     res.json(data);
   } catch (err) {
     console.error("❌ Lỗi proxy:", err);
-    res
-      .status(500)
-      .json({ error: "Không thể kết nối tới Gemini API hoặc mạng đang gặp sự cố." });
+    res.status(500).json({ error: "Không thể kết nối tới Gemini API hoặc mạng đang gặp sự cố." });
   }
 });
 
-// 🚀 Khởi động server (localhost hoặc Replit)
+// ✅ Route mặc định: khi người dùng truy cập "/" thì gửi về index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// ✅ Route cho các trang con (cho phép /DangNhap, /DangKy, /game ...)
+app.get("/:page", (req, res) => {
+  const filePath = path.join(__dirname, `${req.params.page}.html`);
+  res.sendFile(filePath, (err) => {
+    if (err) res.status(404).send("Trang không tồn tại.");
+  });
+});
+
+// 🚀 Khởi động server (chỉ dùng khi chạy local)
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
