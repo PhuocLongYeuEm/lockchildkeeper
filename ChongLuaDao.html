@@ -127,7 +127,7 @@
 									src="lolicon.png"
 									class="w-16 h-16"
 								></img
-								><span style="cursor: pointer;" id="homeBtn" class="text-xl font-bold btn-outline"
+								><span style="cursor: pointer;" id="homeBtn2" class="text-xl font-bold btn-outline"
 									>Lock Child Keeper</span
 								>
 							</div>
@@ -346,17 +346,21 @@
     <script>
       // Nút chuyển trang
       document.getElementById("homeBtn").addEventListener("click", () => {
-        window.location.href = "index.html";
+        window.location.href = `${window.location.origin}/index.html`;
       });
       document.getElementById("protectBtn").addEventListener("click", () => {
-        window.location.href = "ChongLuaDao.html";
+        window.location.href = `${window.location.origin}/ChongLuaDao.html`;
       });
       document.getElementById("registerBtn").addEventListener("click", () => {
-        window.location.href = "DangKy.html";
+        window.location.href = `${window.location.origin}/DangKy.html`;
       });
       document.getElementById("loginBtn").addEventListener("click", () => {
-        window.location.href = "DangNhap.html";
+        window.location.href = `${window.location.origin}/DangNhap.html`;
       });
+      document.getElementById("homeBtn2").addEventListener("click", () => {
+        window.location.href = `${window.location.origin}/index.html`;
+      });
+  
 
       // Hiệu ứng xuất hiện khi cuộn
       const cards = document.querySelectorAll(".prevention-card");

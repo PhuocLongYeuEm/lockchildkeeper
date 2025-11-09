@@ -1,5 +1,4 @@
-// ✅ Tự động chọn đúng URL (localhost hoặc Replit/Vercel)
-const API_URL =
+const API_URL = "https://lockchildkeeper.vercel.app/analyze";
   window.location.hostname.includes("repl") ||
   window.location.hostname.includes("vercel") ||
   window.location.hostname.includes("asia")
